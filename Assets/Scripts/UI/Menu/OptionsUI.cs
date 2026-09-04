@@ -502,37 +502,6 @@ public class OptionsUI : MonoBehaviour
         if (row != null)
         {
             row.gameObject.SetActive(true);
-
-            TMP_Text[] texts =
-                row.GetComponentsInChildren<TMP_Text>(true);
-
-            for (int i = 0; i < texts.Length; i++)
-            {
-                TMP_Text text = texts[i];
-
-                if (text == null ||
-                    IsInsideButton(text.transform, hudPositionLeftButton) ||
-                    IsInsideButton(text.transform, hudPositionRightButton))
-                {
-                    continue;
-                }
-
-                string currentText = text.text ?? string.Empty;
-
-                if (currentText.IndexOf(
-                        "joystick",
-                        System.StringComparison.OrdinalIgnoreCase) >= 0 ||
-                    text.gameObject.name.IndexOf(
-                        "label",
-                        System.StringComparison.OrdinalIgnoreCase) >= 0 ||
-                    text.gameObject.name.IndexOf(
-                        "title",
-                        System.StringComparison.OrdinalIgnoreCase) >= 0)
-                {
-                    text.SetText("HUD POSITION");
-                    break;
-                }
-            }
         }
 
         SetButtonObjectActive(hudPositionLeftButton, true);

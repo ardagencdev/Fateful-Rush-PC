@@ -31,7 +31,7 @@ MonoBehaviour:
   Keys: 07000000
   Values:
   - {fileID: 7047171432247752850}
-  m_EnableAdaptivePerformance: 1
+  m_EnableAdaptivePerformance: 0
   m_Version: 6000.3
 --- !u!114 &7047171432247752850
 MonoBehaviour:
@@ -46,5 +46,5 @@ MonoBehaviour:
   m_Name: Android Settings
   m_EditorClassIdentifier: UnityEngine.dll::UnityEngine.AdaptivePerformance.AdaptivePerformanceGeneralSettings
   m_LoaderManagerInstance: {fileID: -681267851015242762}
-  m_InitManagerOnStart: 1
+  m_InitManagerOnStart: 0
   m_LastSelectedProvider: 

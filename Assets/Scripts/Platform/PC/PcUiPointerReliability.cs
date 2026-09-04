@@ -17,8 +17,15 @@ using UnityEngine.UI;
 /// </summary>
 public sealed class PcUiPointerReliability : MonoBehaviour
 {
-    private static readonly WaitForSecondsRealtime RescanDelay =
-        new WaitForSecondsRealtime(1.5f);
+    // A few short post-load passes catch UI that is instantiated during scene
+    // startup without doing a full Button/Canvas search forever during play.
+    private static readonly WaitForSecondsRealtime ShortRepairDelay =
+        new WaitForSecondsRealtime(0.15f);
+
+    private static readonly WaitForSecondsRealtime FinalRepairDelay =
+        new WaitForSecondsRealtime(0.85f);
+
+    private Coroutine repairRoutine;
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     private static void Bootstrap()
@@ -37,24 +44,42 @@ public sealed class PcUiPointerReliability : MonoBehaviour
         SceneManager.sceneLoaded += HandleSceneLoaded;
     }
 
-    private IEnumerator Start()
+    private void Start()
     {
-        // Let scene UI finish Awake/OnEnable first.
-        yield return null;
-        RepairLoadedUi();
-
-        // Level buttons and some modal UI are instantiated lazily. A very
-        // light periodic pass catches those without doing per-frame work.
-        while (true)
-        {
-            yield return RescanDelay;
-            RepairLoadedUi();
-        }
+        SchedulePostLoadRepair();
     }
 
     private void HandleSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        SchedulePostLoadRepair();
+    }
+
+    private void SchedulePostLoadRepair()
+    {
+        if (!isActiveAndEnabled)
+            return;
+
+        if (repairRoutine != null)
+            StopCoroutine(repairRoutine);
+
+        repairRoutine = StartCoroutine(PostLoadRepairRoutine());
+    }
+
+    private IEnumerator PostLoadRepairRoutine()
+    {
+        // Pass 1: UI that already exists in the loaded scene.
+        yield return null;
         RepairLoadedUi();
+
+        // Pass 2: objects created by Start/first-frame setup.
+        yield return ShortRepairDelay;
+        RepairLoadedUi();
+
+        // Pass 3: delayed level/menu construction. After this, stop scanning.
+        yield return FinalRepairDelay;
+        RepairLoadedUi();
+
+        repairRoutine = null;
     }
 
     private static void RepairLoadedUi()
@@ -265,6 +290,12 @@ public sealed class PcUiPointerReliability : MonoBehaviour
     private void OnDestroy()
     {
         SceneManager.sceneLoaded -= HandleSceneLoaded;
+
+        if (repairRoutine != null)
+        {
+            StopCoroutine(repairRoutine);
+            repairRoutine = null;
+        }
     }
 }
 

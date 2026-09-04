@@ -829,6 +829,13 @@ public class IntroController : MonoBehaviour
             Mouse.current != null &&
             Mouse.current.leftButton.wasPressedThisFrame;
 
+        // Google Play Games on PC can expose left-click as a virtual
+        // touchscreen tap while input translation mode is active. Keep this
+        // fallback so "Tap to Play" works even before/without raw mouse mode.
+        bool touchPressed =
+            Touchscreen.current != null &&
+            Touchscreen.current.primaryTouch.press.wasPressedThisFrame;
+
         bool keyboardPressed =
             Keyboard.current != null &&
             Keyboard.current.anyKey.wasPressedThisFrame;
@@ -838,7 +845,10 @@ public class IntroController : MonoBehaviour
             (Gamepad.current.buttonSouth.wasPressedThisFrame ||
              Gamepad.current.startButton.wasPressedThisFrame);
 
-        return mousePressed || keyboardPressed || gamepadPressed;
+        return mousePressed ||
+               touchPressed ||
+               keyboardPressed ||
+               gamepadPressed;
     }
 
     private static WaitForSecondsRealtime WaitRealtime(float duration)

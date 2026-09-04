@@ -1,6 +1,7 @@
 #if UNITY_EDITOR
 using System;
 using System.Linq;
+using System.IO;
 using System.Text;
 using UnityEditor;
 using UnityEditor.Build;
@@ -119,6 +120,12 @@ public static class GpgPcBuildValidator
             report
         );
 
+        valid &= Check(
+            SourceManifestDeclaresPcFeature(),
+            "source manifest declares android.hardware.type.pc (raw mouse / hover)",
+            report
+        );
+
         bool inputSdkInstalled = AppDomain.CurrentDomain
             .GetAssemblies()
             .Any(a => a.GetType(InputSdkProviderType, false) != null);
@@ -141,6 +148,19 @@ public static class GpgPcBuildValidator
         );
 
         return valid;
+    }
+
+    private static bool SourceManifestDeclaresPcFeature()
+    {
+        const string path = "Assets/Plugins/Android/AndroidManifest.xml";
+
+        if (!File.Exists(path))
+            return false;
+
+        string manifest = File.ReadAllText(path);
+
+        return manifest.Contains("android.hardware.type.pc") &&
+               manifest.Contains("android:required=\"false\"");
     }
 
     private static bool Check(
