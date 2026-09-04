@@ -1,0 +1,6 @@
+<dependencies>
+  <androidPackages>
+    <androidPackage spec="com.google.android.libraries.play.games:inputmapping:1.1.1-beta"/>
+    <androidPackage spec="org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.61"/>
+  </androidPackages>
+</dependencies>

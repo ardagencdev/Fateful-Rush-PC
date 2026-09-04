@@ -1,0 +1,31 @@
+<dependencies>
+  <packages>
+    <package>androidx.constraintlayout:constraintlayout:2.1.4</package>
+    <package>androidx.fragment:fragment:1.7.1</package>
+    <package>androidx.lifecycle:lifecycle-process:2.6.2</package>
+    <package>com.google.android.gms:play-services-ads:25.4.0</package>
+    <package>com.google.android.gms:play-services-games-v2:22.0.0</package>
+    <package>com.google.android.gms:play-services-nearby:18.5.0</package>
+    <package>com.google.android.libraries.play.games:inputmapping:1.1.1-beta</package>
+    <package>com.google.android.ump:user-messaging-platform:4.0.0</package>
+    <package>org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.61</package>
+  </packages>
+  <files />
+  <settings>
+    <setting name="androidAbis" value="x86_64" />
+    <setting name="bundleId" value="com.youngdevstudios.fatefulrush" />
+    <setting name="explodeAars" value="True" />
+    <setting name="gradleBuildEnabled" value="True" />
+    <setting name="gradlePropertiesTemplateEnabled" value="True" />
+    <setting name="gradleTemplateEnabled" value="True" />
+    <setting name="installAndroidPackages" value="True" />
+    <setting name="localMavenRepoDir" value="Assets/GeneratedLocalRepo" />
+    <setting name="packageDir" value="Assets/Plugins/Android" />
+    <setting name="patchAndroidManifest" value="True" />
+    <setting name="patchMainTemplateGradle" value="True" />
+    <setting name="projectExportEnabled" value="False" />
+    <setting name="useFullCustomMavenRepoPathWhenExport" value="True" />
+    <setting name="useFullCustomMavenRepoPathWhenNotExport" value="False" />
+    <setting name="useJetifier" value="True" />
+  </settings>
+</dependencies>

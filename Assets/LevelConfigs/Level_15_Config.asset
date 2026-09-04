@@ -1,0 +1,300 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42f5a7d7fe7c1fe4ab826884abb3d161, type: 3}
+  m_Name: Level_15_Config
+  m_EditorClassIdentifier: Assembly-CSharp::LevelConfig
+  levelNumber: 15
+  levelName: Hunter's Mark
+  mechanicProgression:
+    reachScoreMode: 0
+    surviveTimeMode: 0
+    timedScoreMode: 0
+    dash: 0
+    clone: 0
+    combo: 0
+    normalCoin: 0
+    goldCoin: 0
+    rareCoin: 0
+    staticObstacles: 0
+    normalEnemy: 0
+    projectileEnemy: 0
+    hunterEnemy: 1
+    boss: 0
+    beaconEnemy: 0
+    armor: 0
+    slow: 0
+    verticalLaser: 0
+    horizontalLaser: 0
+    spaceBomb: 0
+  briefingTitle: "MISSION 15 \u2014 HUNTER'S MARK"
+  missionDifficulty: 2
+  briefingModeDescription: 
+  briefingObjectiveDescription: 
+  briefingPages:
+  - Hunters show a warning line before charging. Let the line commit, sidestep the
+    charge, and watch both Hunters before using Dash.
+  gameplayMusic: {fileID: 8300000, guid: 21070359d7da6aa42b488785ca0de594, type: 3}
+  winCondition: 2
+  winScore: 80
+  timeLimit: 35
+  showGameTimerHUD: 1
+  playerMoveSpeed: 6.4
+  dashEnabled: 1
+  cloneEnabled: 0
+  dashDistance: 3
+  dashDuration: 0.15
+  dashCooldown: 3
+  cloneDuration: 4
+  cloneCooldown: 10
+  cloneUses: 1
+  armorImmuneDuration: 1.5
+  slowMultiplier: 0.5
+  slowDuration: 5
+  comboEnabled: 1
+  comboTimeLimit: 2.2
+  comboSpeedStages:
+  - comboMultiplier: 2
+    coinsRequired: 3
+    playerSpeedMultiplier: 1.03
+  - comboMultiplier: 3
+    coinsRequired: 7
+    playerSpeedMultiplier: 1.06
+  - comboMultiplier: 4
+    coinsRequired: 14
+    playerSpeedMultiplier: 1.09
+  - comboMultiplier: 5
+    coinsRequired: 18
+    playerSpeedMultiplier: 1.12
+  - comboMultiplier: 6
+    coinsRequired: 22
+    playerSpeedMultiplier: 1.15
+  randomizeNearStarsColor: 0
+  nearStarsColor: {r: 0.48544, g: 0.38976, b: 1, a: 1}
+  nearStarsSpeedMultiplier: 1.173
+  nearStarsSizeMultiplier: 1.008
+  starfieldDensityMultiplier: 0.929
+  nearStarsEmissionRate: 42
+  coinSpawnInterval: 0.9
+  maxCoinCount: 10
+  normalCoinChance: 70
+  goldCoinChance: 25
+  rareCoinChance: 5
+  normalCoinValue: 1
+  goldCoinValue: 3
+  rareCoinValue: 5
+  normalCoinEnabled: 1
+  goldCoinEnabled: 1
+  rareCoinEnabled: 1
+  obstacleSpawnMode: 0
+  levelObstacles:
+  - prefab: {fileID: 4509020153673322666, guid: afedeaabd585710449580ef5dbb3e1bc, type: 3}
+    enabled: 0
+  - prefab: {fileID: 1982787718258633688, guid: 3146b88f91c051d47b5fddc85a0e1d31, type: 3}
+    enabled: 1
+  - prefab: {fileID: 4507725915358148117, guid: 5f848fa623177b64780c532f94c62ca5, type: 3}
+    enabled: 1
+  - prefab: {fileID: 1198742668289528155, guid: e92d44d4f2069ce47ad1f793030e40d8, type: 3}
+    enabled: 0
+  - prefab: {fileID: 1198742668289528155, guid: a1835203bad3bd848865e7a8a38f1e4c, type: 3}
+    enabled: 0
+  - prefab: {fileID: 1198742668289528155, guid: b0b17e18d59613249b04b704bf589e04, type: 3}
+    enabled: 0
+  - prefab: {fileID: 1198742668289528155, guid: aa4e8dc2beb3cdb4da72ef8675f7c575, type: 3}
+    enabled: 0
+  - prefab: {fileID: 1198742668289528155, guid: e51d565c6e170ff46b9180c55a5bdc67, type: 3}
+    enabled: 1
+  - prefab: {fileID: 1198742668289528155, guid: b45512429b7a5764788d7dfd1ea74531, type: 3}
+    enabled: 0
+  - prefab: {fileID: 5815721319752824181, guid: 06b667b5b68c53a488fd94752c69f0dd, type: 3}
+    enabled: 0
+  - prefab: {fileID: 1198742668289528155, guid: 9ebcaeaa04c505648a171fde806a61c0, type: 3}
+    enabled: 0
+  - prefab: {fileID: 1198742668289528155, guid: 847a7b13c1a308048b25dc05595b68cc, type: 3}
+    enabled: 0
+  - prefab: {fileID: 1198742668289528155, guid: 44cf2912484bee54c95a93af81028b6e, type: 3}
+    enabled: 0
+  randomObstacleCount: 3
+  dangerBalanceProfile: {fileID: 11400000, guid: c12f8a9a7a674756a8a55e482d7304b2, type: 2}
+  normalEnemyCount: 3
+  normalEnemySpawnInterval: 5.1
+  normalEnemyDanger: 3
+  normalEnemyCustomOverride: 0
+  normalEnemyOverride:
+    minStartSpeed: 1.5
+    maxStartSpeed: 2.5
+    maxSpeed: 7
+    speedIncreaseRate: 0.1
+    predictionEnabled: 1
+    predictionDistanceThreshold: 2.5
+    predictionTime: 0.25
+    maxPredictionDistance: 1.5
+    separationEnabled: 1
+    separationRadius: 0.75
+    separationStrength: 0.65
+  projectileEnemyCount: 2
+  projectileEnemySpawnInterval: 12
+  projectileEnemyDanger: 2
+  projectileEnemyCustomOverride: 0
+  projectileEnemyOverride:
+    moveSpeed: 3
+    stoppingDistance: 7
+    retreatDistance: 4
+    fireRate: 1.5
+    projectileSpeed: 6
+    strafeEnabled: 1
+    strafeSpeedMultiplier: 0.65
+    strafeDirectionChangeMinTime: 1.5
+    strafeDirectionChangeMaxTime: 3
+    strafeDistanceTolerance: 0.6
+    predictiveAimEnabled: 1
+    predictionTime: 0.25
+    maxPredictionDistance: 1.5
+    predictionDistanceThreshold: 2.5
+    separationEnabled: 1
+    separationRadius: 0.9
+    separationStrength: 0.45
+  hunterEnemyCount: 2
+  hunterEnemySpawnInterval: 17
+  hunterEnemyDanger: 1
+  hunterEnemyCustomOverride: 0
+  hunterEnemyOverride:
+    prepareDistance: 6
+    repositionTime: 1.2
+    recoveryTime: 1.2
+    warningDuration: 1
+    chargeSpeed: 15
+    maxChargeTime: 0.65
+    stunDuration: 1
+  bossEnabled: 0
+  bossSpawnCondition: 0
+  bossSpawnScore: 75
+  bossSpawnTime: 30
+  bossDanger: 1
+  bossCustomOverride: 0
+  bossOverride:
+    speed: 1.2
+    directionSmoothness: 7
+    canSplit: 1
+    splitDelay: 0.8
+    splitDistance: 1.2
+    miniBossSpeed: 2.5
+  beaconEnemyCount: 0
+  beaconMinSpawnTime: 10
+  beaconMaxSpawnTime: 20
+  beaconEnemyDanger: 1
+  beaconEnemyCustomOverride: 0
+  beaconEnemyOverride:
+    activationDelay: 3
+    pulseInterval: 2
+    retargetInterval: 0.5
+    targetStopDistance: 1.5
+    buffDuration: 15
+    buffSizeMultiplier: 1.25
+    normalSpeedMultiplier: 1.35
+    normalMaxSpeedMultiplier: 1
+    projectileMoveMultiplier: 1.2
+    projectileShotMultiplier: 1.25
+    projectileFireMultiplier: 1.25
+    hunterRepositionMultiplier: 0.8
+    hunterWarningMultiplier: 0.8
+    hunterChargeMultiplier: 1.25
+    hunterStunMultiplier: 0.8
+    moveSpeed: 3
+    safeDistanceFromPlayer: 5
+    wanderStrength: 0.6
+    respawnDelay: 6
+  normalMinStartSpeed: 1.5
+  normalMaxStartSpeed: 2.5
+  normalMaxSpeed: 7
+  normalSpeedIncreaseRate: 0.1
+  normalPredictionEnabled: 1
+  normalPredictionDistanceThreshold: 2.5
+  normalPredictionTime: 0.25
+  normalMaxPredictionDistance: 1.5
+  normalSeparationEnabled: 1
+  normalSeparationRadius: 0.75
+  normalSeparationStrength: 0.65
+  projectileMoveSpeed: 3
+  projectileStoppingDistance: 7
+  projectileRetreatDistance: 4
+  projectileFireRate: 1.5
+  projectileSpeed: 6
+  hunterRepositionTime: 1.2
+  hunterWarningDuration: 1
+  hunterChargeSpeed: 15
+  hunterStunDuration: 1
+  bossSpeed: 1.2
+  bossCanSplit: 1
+  bossSplitDelay: 0.8
+  bossSplitDistance: 1.2
+  miniBossSpeed: 2.5
+  beaconBuffDuration: 15
+  beaconBuffSizeMultiplier: 1.25
+  beaconNormalSpeedMultiplier: 1.35
+  beaconNormalMaxSpeedMultiplier: 1
+  beaconProjectileMoveMultiplier: 1.2
+  beaconProjectileShotMultiplier: 1.25
+  beaconProjectileFireMultiplier: 1.25
+  beaconHunterRepositionMultiplier: 0.8
+  beaconHunterWarningMultiplier: 0.8
+  beaconHunterChargeMultiplier: 1.25
+  beaconHunterStunMultiplier: 0.8
+  beaconRespawnDelay: 6
+  armorEnabled: 1
+  slowEnabled: 0
+  armorMinSpawnTime: 10
+  armorMaxSpawnTime: 16
+  slowMinSpawnTime: 8
+  slowMaxSpawnTime: 20
+  verticalLaserEnabled: 0
+  verticalLaserDanger: 1
+  verticalLaserCustomOverride: 0
+  verticalLaserOverride:
+    minSpawnTime: 8
+    maxSpawnTime: 25
+    warningDuration: 2
+    lifeTime: 1.5
+    width: 0.5
+    sizeExtra: 1
+  horizontalLaserEnabled: 0
+  horizontalLaserDanger: 1
+  horizontalLaserCustomOverride: 0
+  horizontalLaserOverride:
+    minSpawnTime: 8
+    maxSpawnTime: 25
+    warningDuration: 2
+    lifeTime: 1.5
+    width: 0.5
+    sizeExtra: 1
+  bombTrapEnabled: 1
+  bombDanger: 2
+  bombCustomOverride: 0
+  bombOverride:
+    minSpawnTime: 6
+    maxSpawnTime: 14
+    maxBombCount: 3
+    spawnSafeTime: 0.35
+  verticalLaserMinSpawnTime: 8
+  verticalLaserMaxSpawnTime: 25
+  verticalLaserWarningDuration: 2
+  verticalLaserLifeTime: 1.5
+  verticalLaserWidth: 0.5
+  verticalLaserHeightExtra: 1
+  horizontalLaserMinSpawnTime: 8
+  horizontalLaserMaxSpawnTime: 25
+  horizontalLaserWarningDuration: 2
+  horizontalLaserLifeTime: 1.5
+  horizontalLaserWidth: 0.5
+  horizontalLaserWidthExtra: 1
+  bombMinSpawnTime: 6
+  bombMaxSpawnTime: 14
+  maxBombCount: 3

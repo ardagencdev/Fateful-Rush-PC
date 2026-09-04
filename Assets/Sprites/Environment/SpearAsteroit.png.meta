@@ -1,0 +1,208 @@
+fileFormatVersion: 2
+guid: a215ddb0c0054a04896bd4a9ea9116f7
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -3665477778369480415
+    second: SpearAsteroit_0
+  - first:
+      213: -2132240892230457886
+    second: SpearAsteroit_1
+  - first:
+      213: 1840171212095841688
+    second: SpearAsteroit_2
+  - first:
+      213: -5457803301551330725
+    second: SpearAsteroit_3
+  - first:
+      213: -6255105704136223711
+    second: SpearAsteroit_4
+  - first:
+      213: 6273793092406826684
+    second: SpearAsteroit_5
+  - first:
+      213: 6481689316132672404
+    second: SpearAsteroit_6
+  - first:
+      213: -2048591960733657130
+    second: SpearAsteroit_7
+  - first:
+      213: 5954706907049265273
+    second: SpearAsteroit_8
+  - first:
+      213: 960641726881559328
+    second: SpearAsteroit_9
+  - first:
+      213: 7330092752054278144
+    second: SpearAsteroit_10
+  - first:
+      213: -9199512490300107653
+    second: SpearAsteroit_11
+  - first:
+      213: -7355210426417755400
+    second: SpearAsteroit_12
+  - first:
+      213: -1010181443524694783
+    second: SpearAsteroit_13
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 1024
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 1024
+    resizeAlgorithm: 0
+    textureFormat: 49
+    textureCompression: 1
+    compressionQuality: 100
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 1
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: SpearAsteroit_0
+      rect:
+        serializedVersion: 2
+        x: 184
+        y: 156
+        width: 1193
+        height: 781
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 129f230916b912dc0800000000000000
+      internalID: -3665477778369480415
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 26afd723671769d42bbe5eb43e89a714
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      SpearAsteroit_0: -3665477778369480415
+      SpearAsteroit_1: -2132240892230457886
+      SpearAsteroit_10: 7330092752054278144
+      SpearAsteroit_11: -9199512490300107653
+      SpearAsteroit_12: -7355210426417755400
+      SpearAsteroit_13: -1010181443524694783
+      SpearAsteroit_2: 1840171212095841688
+      SpearAsteroit_3: -5457803301551330725
+      SpearAsteroit_4: -6255105704136223711
+      SpearAsteroit_5: 6273793092406826684
+      SpearAsteroit_6: 6481689316132672404
+      SpearAsteroit_7: -2048591960733657130
+      SpearAsteroit_8: 5954706907049265273
+      SpearAsteroit_9: 960641726881559328
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,0 +1,244 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1296000383712174403
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7493658001956639847}
+  - component: {fileID: 1830563482537863327}
+  - component: {fileID: 4980380022393150848}
+  - component: {fileID: 1848007035685701733}
+  - component: {fileID: 2096743325358198739}
+  - component: {fileID: 2656740657223815581}
+  m_Layer: 3
+  m_Name: Enemy_MiniBoss
+  m_TagString: Enemy
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7493658001956639847
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1296000383712174403}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 4, y: 0, z: 0}
+  m_LocalScale: {x: 0.2, y: 0.2, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &1830563482537863327
+SpriteRenderer:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1296000383712174403}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 5
+  m_MaskInteraction: 0
+  m_Sprite: {fileID: -8660411498501594391, guid: 8301ea9f786e3324595b9175bdf12447, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 0.8, y: 1.13}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_SpriteSortPoint: 0
+  m_BlendShapeWeights: []
+--- !u!50 &4980380022393150848
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1296000383712174403}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 1
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 1
+  m_Constraints: 4
+--- !u!58 &1848007035685701733
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1296000383712174403}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 6200000, guid: c144d36e1cf3a1d45aeac22bb7440337, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0.02002716, y: -0.16019543}
+  m_Radius: 4.216154
+--- !u!114 &2096743325358198739
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1296000383712174403}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b10e67aefb81254b9214986e17e2a94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MiniBossFollow
+  player: {fileID: 0}
+  speed: 4.5
+  normalShakeAmount: 0.01
+  directionSmoothness: 8
+  pursuitRole: 0
+  interceptorLeadDistance: 2.6
+  predictionTime: 0.25
+  maxPredictionDistance: 1.5
+  tacticalOffsetFadeDistance: 3.4
+  minSideMoveAmount: 0.18
+  maxSideMoveAmount: 0.35
+  minSideMoveSpeed: 1.5
+  maxSideMoveSpeed: 3
+  solidLayers:
+    serializedVersion: 2
+    m_Bits: 2112
+  castSkin: 0.05
+  obstacleProbeDistance: 0.9
+  obstacleOutwardBias: 0.3
+  slideDirectionAttempts: 4
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  escapeCheckRadius: 1.2
+  escapeSpeedMultiplier: 2.2
+  aoeEnabled: 1
+  aoeInitialCooldown: 2
+  aoeCooldown: 4.5
+  aoeTriggerDistance: 5
+  aoeRadius: 5.5
+  aoeChargeDuration: 0.9
+  aoeMaxShakeAmount: 0.12
+  aoeCoverLayers:
+    serializedVersion: 2
+    m_Bits: 64
+  dangerPreviewColor: {r: 1, g: 0, b: 0, a: 0.42}
+  dangerStrikeWaveDuration: 0.3
+  dangerStrikeWaveWidth: 0.11
+  dangerStrikeWaveBoost: 1.45
+  dangerPreviewFadeOutDuration: 0.45
+  dangerPreviewInnerPadding: 0.1
+  dangerPreviewInnerAlphaMultiplier: 0.22
+  dangerPreviewWaveFrontWidth: 0.12
+  dangerPreviewWaveFrontBoost: 0.75
+  dangerPreviewInnerBrightness: 0.55
+  dangerPreviewRayCount: 360
+  dangerPreviewShader: {fileID: 4800000, guid: 816c1249d7195ad4faf14a6513792531, type: 3}
+  dangerPreviewVisibilityRefreshRate: 15
+  dangerPreviewCoverFeather: 0.08
+  dangerPreviewSortingOrder: 20000
+  aoeSfx: {fileID: 8300000, guid: d22d204260651ed4e874922fc648327b, type: 3}
+  stuckCheckTime: 0.25
+  stuckDistance: 0.05
+  unstuckDuration: 0.35
+  unstuckSideForce: 3
+  canTargetClone: 0
+  aoeBalanceVersion: 1
+--- !u!114 &2656740657223815581
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1296000383712174403}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 402df05ed7d9d784e91041b257469198, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DeathFadeEffect
+  fadeDuration: 0.45
+  destroyAfterFade: 1

@@ -1,0 +1,237 @@
+fileFormatVersion: 2
+guid: 32407968f9a245f40aa032195de7249c
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -7820507723196672528
+    second: NewPauseButton_0
+  - first:
+      213: 7220263067056504786
+    second: NewPauseButton_1
+  - first:
+      213: 5531027602080701096
+    second: NewPauseButton_2
+  - first:
+      213: 8013764781586386809
+    second: NewPauseButton_3
+  - first:
+      213: -935631585053608218
+    second: NewPauseButton_4
+  - first:
+      213: 2925609355891190497
+    second: NewPauseButton_5
+  - first:
+      213: 7304580831809027453
+    second: NewPauseButton_6
+  - first:
+      213: 2330427906548222172
+    second: NewPauseButton_7
+  - first:
+      213: -8290580785067059823
+    second: NewPauseButton_8
+  - first:
+      213: -4535073344507616928
+    second: NewPauseButton_9
+  - first:
+      213: -2868671585368350884
+    second: NewPauseButton_10
+  - first:
+      213: 4598172089723878977
+    second: NewPauseButton_11
+  - first:
+      213: 6725456731913314284
+    second: NewPauseButton_12
+  - first:
+      213: -3099458625238657657
+    second: NewPauseButton_13
+  - first:
+      213: 5861998027189106671
+    second: NewPauseButton_14
+  - first:
+      213: -5321742916417729445
+    second: NewPauseButton_15
+  - first:
+      213: 1370915518851966481
+    second: NewPauseButton_16
+  - first:
+      213: -6057592739778909408
+    second: NewPauseButton_17
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 1024
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 1024
+    resizeAlgorithm: 0
+    textureFormat: 48
+    textureCompression: 1
+    compressionQuality: 100
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 1
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: NewPauseButton_0
+      rect:
+        serializedVersion: 2
+        x: 601
+        y: 382
+        width: 331
+        height: 320
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0f5d9ab19a9f77390800000000000000
+      internalID: -7820507723196672528
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 28354462dfac66941ba75d492115f57f
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      NewPauseButton_0: -7820507723196672528
+      NewPauseButton_1: 7220263067056504786
+      NewPauseButton_10: -2868671585368350884
+      NewPauseButton_11: 4598172089723878977
+      NewPauseButton_12: 6725456731913314284
+      NewPauseButton_13: -3099458625238657657
+      NewPauseButton_14: 5861998027189106671
+      NewPauseButton_15: -5321742916417729445
+      NewPauseButton_16: 1370915518851966481
+      NewPauseButton_17: -6057592739778909408
+      NewPauseButton_2: 5531027602080701096
+      NewPauseButton_3: 8013764781586386809
+      NewPauseButton_4: -935631585053608218
+      NewPauseButton_5: 2925609355891190497
+      NewPauseButton_6: 7304580831809027453
+      NewPauseButton_7: 2330427906548222172
+      NewPauseButton_8: -8290580785067059823
+      NewPauseButton_9: -4535073344507616928
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

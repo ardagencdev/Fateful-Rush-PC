@@ -1,0 +1,9 @@
+﻿<Solution>
+  <Project Path="Assembly-CSharp-Editor.csproj" />
+  <Project Path="Google.LibraryWrapper.OpenJdk8.csproj" />
+  <Project Path="Google.LibraryWrapper.Java.csproj" />
+  <Project Path="Google.Play.Games.Editor.csproj" />
+  <Project Path="Google.Play.Games.csproj" />
+  <Project Path="Assembly-CSharp.csproj" />
+  <Project Path="Google.Android.Libraries.Play.Games.InputMapping.csproj" />
+</Solution>

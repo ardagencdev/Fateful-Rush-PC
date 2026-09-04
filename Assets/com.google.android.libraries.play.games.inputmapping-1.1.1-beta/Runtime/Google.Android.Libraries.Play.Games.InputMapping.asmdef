@@ -1,0 +1,17 @@
+{
+    "name": "Google.Android.Libraries.Play.Games.InputMapping",
+    "rootNamespace": "",
+    "references": [
+        "Google.LibraryWrapper.OpenJdk8",
+        "Google.LibraryWrapper.Java"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
