@@ -396,6 +396,11 @@ public static class StatsManager
 
         PlayerPrefs.Save();
         dirty = false;
+
+        // End-of-run stats are a meaningful progression checkpoint. Cloud
+        // writes are debounced by FatefulRushCloudSave, so this does not
+        // create a network write for every stat mutation.
+        FatefulRushCloudSave.RequestUpload();
     }
 
     public static int GetTotalRuns() => GetInt(TotalRunsKey);

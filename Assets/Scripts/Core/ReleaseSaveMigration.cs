@@ -170,6 +170,9 @@ public static class ReleaseSaveMigration
         // start from the default SIGNAL // UNSTABLE state.
         PlayerPrefs.DeleteKey("FatefulRush_SignalStable");
 
+        // Cloud-save revision belongs to the discarded gameplay generation.
+        PlayerPrefs.DeleteKey("FatefulRush_CloudRevisionUtcTicks");
+
         // Remove diagnostic-only state left by the PGS troubleshooting build.
         PlayerPrefs.DeleteKey("GPGS_DIAG_LastAuth");
         PlayerPrefs.DeleteKey("GPGS_DIAG_LastUI");

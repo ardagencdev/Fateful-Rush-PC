@@ -353,6 +353,7 @@ public class PlayerSkinCatalog : ScriptableObject
 
         PlayerPrefs.DeleteKey(SelectedSkinKey);
         PlayerPrefs.Save();
+        FatefulRushCloudSave.RequestUpload();
 
         if (hadSelection)
             SelectedSkinChanged?.Invoke();
@@ -443,6 +444,8 @@ public class PlayerSkinCatalog : ScriptableObject
 
         if (changed)
         {
+            FatefulRushCloudSave.RequestUpload();
+
             GooglePlayGamesManager.NotifySkinEquipped(
                 skin.id
             );

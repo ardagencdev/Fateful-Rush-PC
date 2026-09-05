@@ -201,7 +201,7 @@ public sealed class GooglePlayGamesManager : MonoBehaviour
             "[GooglePlayGames] Authenticated successfully."
         );
 
-        SyncProgressFromLocalSave();
+        BeginCloudSyncThenSyncAchievements();
     }
 #endif
 
@@ -298,10 +298,11 @@ public sealed class GooglePlayGamesManager : MonoBehaviour
             authenticated = true;
             lastAuthenticationStatus = SignInStatus.Success.ToString();
             SaveDiagnosticState();
-            SyncProgressFromLocalSave();
-
-            if (showAchievementsAfterSignIn)
-                ShowAchievementsUIInternal();
+            BeginCloudSyncThenSyncAchievements(
+                showAchievementsAfterSignIn
+                    ? (System.Action)ShowAchievementsUIInternal
+                    : null
+            );
 
             return;
         }
@@ -327,10 +328,11 @@ public sealed class GooglePlayGamesManager : MonoBehaviour
 
                 if (authenticated)
                 {
-                    SyncProgressFromLocalSave();
-
-                    if (showAchievementsAfterSignIn)
-                        ShowAchievementsUIInternal();
+                    BeginCloudSyncThenSyncAchievements(
+                        showAchievementsAfterSignIn
+                            ? (System.Action)ShowAchievementsUIInternal
+                            : null
+                    );
                 }
                 else
                 {
@@ -683,6 +685,24 @@ public sealed class GooglePlayGamesManager : MonoBehaviour
                 AchievementKey.GoldenFate
             );
         }
+    }
+
+    private void BeginCloudSyncThenSyncAchievements(
+        System.Action onFinished = null)
+    {
+#if UNITY_ANDROID && !UNITY_EDITOR
+        FatefulRushCloudSave.SyncAfterAuthentication(
+            () =>
+            {
+                SyncProgressFromLocalSave();
+                GooglePlayGamesLeaderboards.SyncLocalBestTimes();
+                onFinished?.Invoke();
+            }
+        );
+#else
+        SyncProgressFromLocalSave();
+        onFinished?.Invoke();
+#endif
     }
 
     private void SyncProgressFromLocalSave()

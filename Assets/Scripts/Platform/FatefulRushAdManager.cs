@@ -39,7 +39,8 @@ public sealed class FatefulRushAdManager : MonoBehaviour
     // aktif gecirilen toplam 5 dakikada bir reklam hakki.
     private const float MainMenuAdIntervalSeconds = 5f * 60f;
 
-    private const float ProgressSaveIntervalSeconds = 10f;
+    private const float ProgressSaveIntervalSeconds = 30f;
+    private const float AdsStartupDelaySeconds = 2.0f;
     private const float FailedLoadRetrySeconds = 30f;
     private const float LoadedAdRefreshSeconds = 55f * 60f;
 
@@ -71,6 +72,11 @@ public sealed class FatefulRushAdManager : MonoBehaviour
     private float nextAllowedLoadRealtime;
     private float loadedAdRealtime;
     private float nextProgressSaveRealtime;
+
+#if !UNITY_EDITOR
+    private float adsStartupNotBeforeRealtime;
+    private bool adsStartupPending;
+#endif
 
 #if UNITY_EDITOR
     // Editor mock reklam bazen transition canvas'inin arkasinda kalabiliyor
@@ -258,22 +264,32 @@ public sealed class FatefulRushAdManager : MonoBehaviour
             return;
 
 #if UNITY_EDITOR
-        // Google Mobile Ads Unity 5.4+ Editor mock ads can be tested
-        // directly in Play Mode. UMP is a device privacy flow, so bypass it
-        // only inside the Editor and initialize the mock ad SDK directly.
+        // Editor mock ads stay immediate for deterministic testing.
         TryInitializeAdsSafely(true);
 #else
-        BeginConsentFlowSafely();
+        // On GPG PC, do not compete with first-scene shader warm-up / gameplay
+        // startup. Ads are initialized only while the player is safely in the
+        // Main Menu, after the one-time shader warm-up has completed.
+        adsStartupPending = true;
+        adsStartupNotBeforeRealtime =
+            Time.realtimeSinceStartup + AdsStartupDelaySeconds;
 #endif
     }
 
     private void Update()
     {
+        TryStartAdsWhenSafe();
         TrackGameplayAttempt();
         TrackMainMenuTime();
-        RefreshExpiredAdIfNeeded();
-        RetryAdLoadIfNeeded();
-        SaveProgressPeriodically();
+
+        // Network/SDK maintenance and disk flushes are intentionally kept out
+        // of active gameplay. They can safely happen in MainMenu instead.
+        if (IsSafeForAdBackgroundWork())
+        {
+            RefreshExpiredAdIfNeeded();
+            RetryAdLoadIfNeeded();
+            SaveProgressPeriodically();
+        }
     }
 
     private void OnApplicationPause(bool paused)
@@ -311,6 +327,10 @@ public sealed class FatefulRushAdManager : MonoBehaviour
 
         if (scene.name == MainMenuSceneName)
         {
+            // MainMenu is a safe checkpoint for the ad pacing counters.
+            SaveProgress();
+            TryStartAdsWhenSafe();
+
             // MainMenu timeri panel degisikliklerinden etkilenmez.
             // Bir onceki session'dan kalan sure de PlayerPrefs'ten devam eder.
             TryShowMainMenuTimedAdIfDue();
@@ -340,8 +360,9 @@ public sealed class FatefulRushAdManager : MonoBehaviour
             attemptCount
         );
 
-        // Attempt sayaci kritik ve seyrek degistigi icin aninda kalici hale getir.
-        PlayerPrefs.Save();
+        // Do not force a disk flush at the exact moment gameplay starts.
+        // PlayerPrefs.SetInt updates memory immediately; persistence happens at
+        // result/menu/pause checkpoints instead, avoiding a possible frame hitch.
 
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
         Debug.Log(
@@ -519,6 +540,39 @@ public sealed class FatefulRushAdManager : MonoBehaviour
         PlayerPrefs.Save();
     }
 
+    private void TryStartAdsWhenSafe()
+    {
+#if UNITY_EDITOR
+        return;
+#else
+        if (!adsStartupPending ||
+            sdkInitialized ||
+            sdkInitializationStarted ||
+            consentFlowActive ||
+            Time.realtimeSinceStartup < adsStartupNotBeforeRealtime ||
+            !GpgPcShaderWarmup.IsComplete ||
+            !IsSafeForAdBackgroundWork())
+        {
+            return;
+        }
+
+        adsStartupPending = false;
+        BeginConsentFlowSafely();
+#endif
+    }
+
+    private bool IsSafeForAdBackgroundWork()
+    {
+        if (!Application.isFocused || adShowInProgress)
+            return false;
+
+        Scene activeScene = SceneManager.GetActiveScene();
+
+        return activeScene.IsValid() &&
+               activeScene.name == MainMenuSceneName &&
+               !GameStateManager.IsGameplayStarted;
+    }
+
     private void BeginConsentFlowSafely()
     {
         if (consentFlowActive || sdkInitializationStarted)
@@ -618,6 +672,14 @@ public sealed class FatefulRushAdManager : MonoBehaviour
 
     private void TryInitializeAdsSafely(bool skipConsentCheck = false)
     {
+#if !UNITY_EDITOR
+        if (!IsSafeForAdBackgroundWork())
+        {
+            adsStartupPending = true;
+            return;
+        }
+#endif
+
         if (!IsAdsRuntimeSupported() ||
             sdkInitialized ||
             sdkInitializationStarted)
@@ -707,6 +769,11 @@ public sealed class FatefulRushAdManager : MonoBehaviour
 
     private void LoadInterstitialSafely()
     {
+#if !UNITY_EDITOR
+        if (!IsSafeForAdBackgroundWork())
+            return;
+#endif
+
         if (!IsAdsRuntimeSupported() ||
             !sdkInitialized ||
             adLoadInProgress ||

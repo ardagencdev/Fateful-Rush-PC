@@ -48,5 +48,6 @@ public static class SignalStatusState
         );
 
         PlayerPrefs.Save();
+        FatefulRushCloudSave.RequestUpload();
     }
 }

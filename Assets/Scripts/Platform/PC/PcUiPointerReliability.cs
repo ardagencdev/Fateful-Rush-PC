@@ -1,7 +1,9 @@
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -9,23 +11,31 @@ using UnityEngine.UI;
 /// <summary>
 /// PC/GPG pointer hardening for Unity UI.
 ///
-/// The Google Play Games PC client delivers a real mouse when FEATURE_PC is
-/// declared in the final Android manifest. This component complements that by
-/// making sure every Button has a full-RectTransform raycast surface, labels do
-/// not steal hits, and duplicate legacy/new input modules cannot process the
-/// same click twice. No Inspector setup is required.
+/// Google Play Games on PC is configured for raw mouse input through
+/// android.hardware.type.pc. This component keeps uGUI's logical hit area
+/// stable while press/hover animations scale visuals, unifies pointer devices
+/// inside InputSystemUIInputModule, and provides a one-frame fallback only when
+/// Unity's normal Button.onClick was genuinely missed.
 /// </summary>
 public sealed class PcUiPointerReliability : MonoBehaviour
 {
-    // A few short post-load passes catch UI that is instantiated during scene
-    // startup without doing a full Button/Canvas search forever during play.
     private static readonly WaitForSecondsRealtime ShortRepairDelay =
         new WaitForSecondsRealtime(0.15f);
 
     private static readonly WaitForSecondsRealtime FinalRepairDelay =
         new WaitForSecondsRealtime(0.85f);
 
+    private readonly List<RaycastResult> raycastResults =
+        new List<RaycastResult>(32);
+
     private Coroutine repairRoutine;
+    private Coroutine clickFallbackRoutine;
+
+#if UNITY_ANDROID && !UNITY_EDITOR
+    private Button pressedMouseButton;
+    private PcButtonClickObserver pressedClickObserver;
+    private int pressedClickVersion;
+#endif
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     private static void Bootstrap()
@@ -49,8 +59,16 @@ public sealed class PcUiPointerReliability : MonoBehaviour
         SchedulePostLoadRepair();
     }
 
+    private void Update()
+    {
+#if UNITY_ANDROID && !UNITY_EDITOR
+        ProcessRawMouseClickFallback();
+#endif
+    }
+
     private void HandleSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        ClearPendingMousePress();
         SchedulePostLoadRepair();
     }
 
@@ -75,7 +93,8 @@ public sealed class PcUiPointerReliability : MonoBehaviour
         yield return ShortRepairDelay;
         RepairLoadedUi();
 
-        // Pass 3: delayed level/menu construction. After this, stop scanning.
+        // Pass 3: delayed level/menu construction. Dynamic buttons are also
+        // repaired on first mouse-down by the fallback path below.
         yield return FinalRepairDelay;
         RepairLoadedUi();
 
@@ -98,28 +117,32 @@ public sealed class PcUiPointerReliability : MonoBehaviour
         InputSystemUIInputModule inputSystemModule =
             eventSystem.GetComponent<InputSystemUIInputModule>();
 
-        // If both modules are present, both can consume pointer state. The
-        // project already uses Unity's Input System, so keep the Input System
-        // UI module authoritative and disable only the duplicate legacy one.
-        if (inputSystemModule != null)
+        if (inputSystemModule == null)
+            return;
+
+        // A dedicated PC build should behave as one cursor even if Android
+        // exposes both Mouse and Touchscreen-style pointer devices. With the
+        // default mode, activity from a second pointer type can replace the
+        // mouse pointer and generate PointerExit between down/up.
+        inputSystemModule.pointerBehavior =
+            UIPointerBehavior.SingleUnifiedPointer;
+
+        // Only one input module should process the same EventSystem. Keep the
+        // project's Input System module authoritative and disable a duplicate
+        // legacy module if an old scene/prefab still contains one.
+        BaseInputModule[] modules =
+            eventSystem.GetComponents<BaseInputModule>();
+
+        for (int i = 0; i < modules.Length; i++)
         {
-            BaseInputModule[] modules =
-                eventSystem.GetComponents<BaseInputModule>();
+            BaseInputModule module = modules[i];
+            if (module == null || module == inputSystemModule)
+                continue;
 
-            for (int i = 0; i < modules.Length; i++)
+            if (module.GetType().Name == "StandaloneInputModule" &&
+                module.enabled)
             {
-                BaseInputModule module = modules[i];
-                if (module == null || module == inputSystemModule)
-                    continue;
-
-                // Avoid a hard dependency on the legacy module type; if a
-                // StandaloneInputModule is present beside InputSystemUIInputModule,
-                // disable the duplicate pointer processor.
-                if (module.GetType().Name == "StandaloneInputModule" &&
-                    module.enabled)
-                {
-                    module.enabled = false;
-                }
+                module.enabled = false;
             }
         }
     }
@@ -143,8 +166,8 @@ public sealed class PcUiPointerReliability : MonoBehaviour
                  !canvas.worldCamera.isActiveAndEnabled) &&
                 mainCamera != null)
             {
-                // A missing/stale event camera can make Screen Space - Camera
-                // UI appear correct while pointer coordinates raycast wrong.
+                // A stale event camera can make the UI render correctly while
+                // mouse coordinates raycast against the wrong screen space.
                 canvas.worldCamera = mainCamera;
             }
 
@@ -175,10 +198,9 @@ public sealed class PcUiPointerReliability : MonoBehaviour
         if (buttonRect == null)
             return;
 
-        // A Button itself is not a raycast target; a Graphic is. If a prefab
-        // keeps the visible Image on a smaller child, only that child can be
-        // clickable. Give the Button's full RectTransform an invisible input
-        // surface so the visual and logical button area match.
+        // Button input comes from a Graphic, not from the Button component by
+        // itself. Ensure the full root RectTransform always has a raycastable
+        // graphic instead of depending on a smaller sprite/text child.
         Graphic rootGraphic = null;
         Graphic[] rootGraphics = button.GetComponents<Graphic>();
 
@@ -200,16 +222,19 @@ public sealed class PcUiPointerReliability : MonoBehaviour
             hitSurface.raycastTarget = true;
             hitSurface.maskable = true;
 
+            rootGraphic = hitSurface;
+
             if (button.targetGraphic == null)
                 button.targetGraphic = hitSurface;
         }
-        else if (!rootGraphic.raycastTarget)
+        else
         {
             rootGraphic.raycastTarget = true;
+
         }
 
-        // Labels never need to be the raycast endpoint. Events will resolve on
-        // the stable full-size Button surface instead of a glyph/text rect.
+        // Labels do not need to be the raycast endpoint. Events resolve on the
+        // stable full-size Button surface instead of glyph/text rectangles.
         TMP_Text[] tmpLabels = button.GetComponentsInChildren<TMP_Text>(true);
         for (int i = 0; i < tmpLabels.Length; i++)
         {
@@ -225,15 +250,17 @@ public sealed class PcUiPointerReliability : MonoBehaviour
         }
 
         EnsureStableAnimatedHitArea(button, buttonRect);
+        EnsureClickObserver(button);
     }
 
     private static void EnsureStableAnimatedHitArea(
         Button button,
         RectTransform buttonRect)
     {
-        // Android shrinks buttons on PointerDown. Keep that exact visual
-        // feedback on PC, but add a counter-scaled invisible child so the
-        // mouse hit area does not shrink with the visual at the edges.
+        // UIButtonEffect/LevelButtonUI can shrink the Button itself on press.
+        // Unity only emits Button.onClick after down/up resolve to the same
+        // logical target. Keep an invisible counter-scaled child at the
+        // original on-screen size so the hit target never shrinks with visuals.
         bool hasAnimatedPressVisual =
             button.GetComponent<UIButtonEffect>() != null ||
             button.GetComponent<LevelButtonUI>() != null;
@@ -256,8 +283,8 @@ public sealed class PcUiPointerReliability : MonoBehaviour
                 typeof(PcStableButtonHitArea)
             );
 
+            hitAreaObject.layer = button.gameObject.layer;
             hitAreaObject.transform.SetParent(button.transform, false);
-            hitAreaObject.transform.SetAsFirstSibling();
 
             RectTransform hitRect =
                 hitAreaObject.GetComponent<RectTransform>();
@@ -281,10 +308,288 @@ public sealed class PcUiPointerReliability : MonoBehaviour
         {
             stableHitArea = existing.GetComponent<PcStableButtonHitArea>();
             if (stableHitArea == null)
-                stableHitArea = existing.gameObject.AddComponent<PcStableButtonHitArea>();
+            {
+                stableHitArea =
+                    existing.gameObject.AddComponent<PcStableButtonHitArea>();
+            }
+
+            Image hitImage = existing.GetComponent<Image>();
+            if (hitImage != null)
+            {
+                hitImage.raycastTarget = true;
+                }
         }
 
+        // Put the invisible input surface above decorative children. It has no
+        // pointer handler itself, so events bubble cleanly to the Button parent.
+        stableHitArea.transform.SetAsLastSibling();
         stableHitArea.Initialize(buttonRect);
+    }
+
+    private static PcButtonClickObserver EnsureClickObserver(Button button)
+    {
+        if (button == null)
+            return null;
+
+        PcButtonClickObserver observer =
+            button.GetComponent<PcButtonClickObserver>();
+
+        if (observer == null)
+            observer = button.gameObject.AddComponent<PcButtonClickObserver>();
+
+        observer.Initialize(button);
+        return observer;
+    }
+
+#if UNITY_ANDROID && !UNITY_EDITOR
+    private void ProcessRawMouseClickFallback()
+    {
+        Mouse mouse = Mouse.current;
+        if (mouse == null)
+            return;
+
+        Vector2 mousePosition = mouse.position.ReadValue();
+
+        if (mouse.leftButton.wasPressedThisFrame)
+        {
+            Button button = FindButtonAtScreenPoint(mousePosition);
+
+            pressedMouseButton = button;
+            pressedClickObserver = null;
+            pressedClickVersion = 0;
+
+            if (button != null)
+            {
+                // Covers buttons instantiated long after the scene-load repair
+                // passes (for example a level grid opened later from a panel).
+                RepairButton(button);
+                pressedClickObserver = EnsureClickObserver(button);
+
+                if (pressedClickObserver != null)
+                    pressedClickVersion = pressedClickObserver.ClickVersion;
+            }
+        }
+
+        if (!mouse.leftButton.wasReleasedThisFrame)
+            return;
+
+        Button pressed = pressedMouseButton;
+        PcButtonClickObserver observer = pressedClickObserver;
+        int versionAtPress = pressedClickVersion;
+
+        ClearPendingMousePress();
+
+        if (!IsUsableButton(pressed))
+            return;
+
+        Button releasedOver = FindButtonAtScreenPoint(mousePosition);
+
+        bool sameLogicalButton = releasedOver == pressed;
+
+        // If Unity's raycaster temporarily loses the target because the visual
+        // is in the middle of a scale tween, accept the release only when there
+        // is no different blocking UI result and the cursor is still inside the
+        // button's stable logical rectangle.
+        if (!sameLogicalButton && releasedOver == null)
+        {
+            sameLogicalButton =
+                IsScreenPointInsideLogicalButton(pressed, mousePosition);
+        }
+
+        if (!sameLogicalButton)
+            return;
+
+        if (observer == null)
+            observer = EnsureClickObserver(pressed);
+
+        if (observer == null || observer.ClickVersion != versionAtPress)
+            return;
+
+        if (clickFallbackRoutine != null)
+            StopCoroutine(clickFallbackRoutine);
+
+        clickFallbackRoutine = StartCoroutine(
+            DeliverMissedClickNextFrame(
+                pressed,
+                observer,
+                versionAtPress
+            )
+        );
+    }
+
+    private IEnumerator DeliverMissedClickNextFrame(
+        Button button,
+        PcButtonClickObserver observer,
+        int versionAtPress)
+    {
+        // Let InputSystemUIInputModule finish this frame first. If Unity's
+        // normal Button.onClick fires, the observer version changes and this
+        // coroutine becomes a no-op. This prevents double activation.
+        yield return null;
+
+        clickFallbackRoutine = null;
+
+        if (!IsUsableButton(button) ||
+            observer == null ||
+            observer.ClickVersion != versionAtPress)
+        {
+            yield break;
+        }
+
+#if DEVELOPMENT_BUILD
+        Debug.Log(
+            "[GPG PC] Recovered a missed raw-mouse UI click on: " +
+            button.name
+        );
+#endif
+
+        button.onClick.Invoke();
+    }
+
+    private Button FindButtonAtScreenPoint(Vector2 screenPoint)
+    {
+        EventSystem eventSystem = EventSystem.current;
+        if (eventSystem == null)
+            return null;
+
+        PointerEventData pointerData = new PointerEventData(eventSystem)
+        {
+            position = screenPoint
+        };
+
+        raycastResults.Clear();
+        eventSystem.RaycastAll(pointerData, raycastResults);
+
+        if (raycastResults.Count > 0)
+        {
+            // Results are front-to-back. Respect a real blocking graphic instead
+            // of clicking through modals/overlays into a hidden button.
+            for (int i = 0; i < raycastResults.Count; i++)
+            {
+                GameObject hitObject = raycastResults[i].gameObject;
+                if (hitObject == null)
+                    continue;
+
+                Button button = hitObject.GetComponentInParent<Button>();
+                if (IsUsableButton(button))
+                    return button;
+
+                Graphic blocker = hitObject.GetComponent<Graphic>();
+                if (blocker != null && blocker.raycastTarget)
+                    return null;
+            }
+
+            return null;
+        }
+
+        // Extremely defensive fallback for a transient GraphicRaycaster miss.
+        // It does not run when another raycastable UI object is blocking input.
+        return FindButtonByLogicalRect(screenPoint);
+    }
+
+    private static Button FindButtonByLogicalRect(Vector2 screenPoint)
+    {
+        Button[] buttons = UnityFindCompat.FindObjectsByType<Button>(
+            FindObjectsInactive.Exclude
+        );
+
+        Button best = null;
+        int bestCanvasOrder = int.MinValue;
+        int bestHierarchyDepth = int.MinValue;
+
+        for (int i = 0; i < buttons.Length; i++)
+        {
+            Button button = buttons[i];
+            if (!IsUsableButton(button) ||
+                !IsScreenPointInsideLogicalButton(button, screenPoint))
+            {
+                continue;
+            }
+
+            Canvas canvas = button.GetComponentInParent<Canvas>();
+            int canvasOrder = canvas != null ? canvas.sortingOrder : 0;
+            int hierarchyDepth = GetHierarchyDepth(button.transform);
+
+            if (best == null ||
+                canvasOrder > bestCanvasOrder ||
+                (canvasOrder == bestCanvasOrder &&
+                 hierarchyDepth > bestHierarchyDepth))
+            {
+                best = button;
+                bestCanvasOrder = canvasOrder;
+                bestHierarchyDepth = hierarchyDepth;
+            }
+        }
+
+        return best;
+    }
+
+    private static bool IsScreenPointInsideLogicalButton(
+        Button button,
+        Vector2 screenPoint)
+    {
+        if (button == null)
+            return false;
+
+        RectTransform rect = null;
+        Transform stable = button.transform.Find("[PC] Stable Hit Area");
+
+        if (stable != null)
+            rect = stable as RectTransform;
+
+        if (rect == null)
+            rect = button.transform as RectTransform;
+
+        if (rect == null)
+            return false;
+
+        Canvas canvas = button.GetComponentInParent<Canvas>();
+        Camera eventCamera = null;
+
+        if (canvas != null && canvas.renderMode != RenderMode.ScreenSpaceOverlay)
+        {
+            eventCamera = canvas.worldCamera != null
+                ? canvas.worldCamera
+                : Camera.main;
+        }
+
+        return RectTransformUtility.RectangleContainsScreenPoint(
+            rect,
+            screenPoint,
+            eventCamera
+        );
+    }
+
+    private static int GetHierarchyDepth(Transform transform)
+    {
+        int depth = 0;
+        Transform current = transform;
+
+        while (current != null)
+        {
+            depth++;
+            current = current.parent;
+        }
+
+        return depth;
+    }
+#endif
+
+    private static bool IsUsableButton(Button button)
+    {
+        return button != null &&
+               button.gameObject.activeInHierarchy &&
+               button.IsActive() &&
+               button.IsInteractable();
+    }
+
+    private void ClearPendingMousePress()
+    {
+#if UNITY_ANDROID && !UNITY_EDITOR
+        pressedMouseButton = null;
+        pressedClickObserver = null;
+        pressedClickVersion = 0;
+#endif
     }
 
     private void OnDestroy()
@@ -296,9 +601,14 @@ public sealed class PcUiPointerReliability : MonoBehaviour
             StopCoroutine(repairRoutine);
             repairRoutine = null;
         }
+
+        if (clickFallbackRoutine != null)
+        {
+            StopCoroutine(clickFallbackRoutine);
+            clickFallbackRoutine = null;
+        }
     }
 }
-
 
 /// <summary>
 /// Keeps an invisible Button child at the Button's original on-screen size
@@ -352,5 +662,47 @@ public sealed class PcStableButtonHitArea : MonoBehaviour
             : 1f;
 
         ownRect.localScale = new Vector3(inverseX, inverseY, 1f);
+    }
+}
+
+/// <summary>
+/// Tracks successfully delivered Button.onClick calls. The PC pointer fallback
+/// uses a monotonically increasing version to know whether Unity already
+/// delivered the click before attempting recovery on the next frame.
+/// </summary>
+public sealed class PcButtonClickObserver : MonoBehaviour
+{
+    private Button button;
+
+    public int ClickVersion { get; private set; }
+
+    public void Initialize(Button target)
+    {
+        if (button == target && button != null)
+            return;
+
+        if (button != null)
+            button.onClick.RemoveListener(HandleClickDelivered);
+
+        button = target;
+
+        if (button != null)
+            button.onClick.AddListener(HandleClickDelivered);
+    }
+
+    private void HandleClickDelivered()
+    {
+        unchecked
+        {
+            ClickVersion++;
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (button != null)
+            button.onClick.RemoveListener(HandleClickDelivered);
+
+        button = null;
     }
 }
